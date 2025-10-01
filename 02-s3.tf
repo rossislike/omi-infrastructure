@@ -15,8 +15,8 @@ locals {
 
 
 resource "aws_s3_bucket" "artifacts" {
-  bucket = "${var.project_name}-artifacts-${local.suffix}-${var.environment}"
-  tags   = var.tags
+  bucket        = "omi-artifacts-${var.environment}"
+  tags          = var.tags
   force_destroy = true
 }
 
