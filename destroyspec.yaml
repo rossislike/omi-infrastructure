@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      # Install Terraform if it's not pre-installed in your CodeBuild environment
+      - wget https://releases.hashicorp.com/terraform/1.13.3/terraform_1.13.3_linux_amd64.zip
+      - unzip terraform_1.13.3_linux_amd64.zip
+      - mv terraform /usr/local/bin/
+  pre_build:
+    commands:
+      # Use an environment variable for the backend S3 bucket name
+      - terraform init -backend-config="bucket=$TF_STATE_BUCKET"
+  build:
+    commands:
+      # Run the destroy command
+      - terraform destroy -auto-approve
