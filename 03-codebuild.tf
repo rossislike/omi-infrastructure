@@ -93,6 +93,11 @@ resource "aws_codebuild_project" "github" {
       name  = "S3_BUCKET"
       value = aws_s3_bucket.website.bucket
     }
+
+    environment_variable {
+      name  = "CLOUDFRONT_DISTRIBUTION_ID"
+      value = aws_cloudfront_distribution.distribution.id
+    }
   }
 
   source {
