@@ -8,14 +8,14 @@ locals {
   suffix = random_string.bucket_suffix.result
 }
 
-# resource "aws_s3_bucket" "website" {
-#   bucket = "${var.project_name}-website-${local.suffix}-${var.environment}"
-#   tags   = var.tags
-# }
+resource "aws_s3_bucket" "website" {
+  bucket = "${var.project_name}-website-${local.suffix}-${var.environment}"
+  tags   = var.tags
+}
 
 
 resource "aws_s3_bucket" "artifacts" {
-  bucket        = "omi-artifacts-${var.environment}"
+  bucket        = "${var.project_name}-artifacts-${var.environment}"
   tags          = var.tags
   force_destroy = true
 }

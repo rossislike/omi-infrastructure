@@ -93,6 +93,10 @@ resource "aws_codebuild_project" "github" {
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
 
+    environment_variable {
+      name  = "S3_BUCKET"
+      value = aws_s3_bucket.website.bucket
+    }
   }
 
   source {
