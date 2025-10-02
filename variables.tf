@@ -38,6 +38,11 @@ variable "github_branch" {
   default     = "dev"
 }
 
+variable "state_bucket" {
+  description = "S3 bucket for Terraform state"
+  type        = string
+  default     = "omi-state"
+}
 # variable "github_token" {
 #   description = "GitHub personal access token"
 #   type        = string
