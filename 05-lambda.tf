@@ -63,21 +63,54 @@ resource "aws_cloudwatch_log_group" "lambda_logs" {
   retention_in_days = 14
 }
 
+####################################################
+data "archive_file" "layer_zip" {
+  type        = "zip"
+  source_dir  = "${path.module}/layer/python"
+  output_path = "${path.module}/layer/layer.zip"
+}
+
+resource "aws_s3_object" "layer_code" {
+  bucket = aws_s3_bucket.lambda_bucket.id
+  key    = "layer.zip"
+  source = data.archive_file.layer_zip.output_path
+  etag   = data.archive_file.layer_zip.output_md5
+}
+
+
 resource "aws_lambda_layer_version" "python_layer" {
-  filename            = "layer/layer.zip"
   layer_name          = "${var.project_name}-layer-${var.environment}"
   description         = "Python dependencies layer"
+  s3_bucket = aws_s3_bucket.lambda_bucket.id
+  s3_key    = aws_s3_object.layer_code.key
+  source_code_hash    = data.archive_file.layer_zip.output_base64sha256
   compatible_runtimes = ["python3.13"]
 }
 
 ####################################################
+data "archive_file" "test_lambda_zip" {
+    type = "zip"
+    source_file = "${path.module}/lambdas/test_lambda.py"
+    output_path = "${path.module}/lambdas/test_lambda.zip"
+}
+
+resource "aws_s3_object" "test_lambda_code" {
+    bucket = aws_s3_bucket.lambda_bucket.id
+    key = "test_lambda.zip"
+    source = data.archive_file.test_lambda_zip.output_path
+    etag = data.archive_file.test_lambda_zip.output_md5
+}
+
 resource "aws_lambda_function" "test_lambda" {
-  filename         = "lambdas/test_lambda.zip"
   function_name    = "${var.project_name}-test-lambda-${var.environment}"
-  source_code_hash = filebase64sha256("lambdas/test_lambda.zip")
   role             = aws_iam_role.lambda_role.arn
   handler          = "test_lambda.lambda_handler"
   runtime          = "python3.13"
+
+  s3_bucket = aws_s3_bucket.lambda_bucket.id
+  s3_key    = aws_s3_object.test_lambda_code.key
+  source_code_hash = data.archive_file.test_lambda_zip.output_base64sha256
+
   layers           = [aws_lambda_layer_version.python_layer.arn]
 
   logging_config {

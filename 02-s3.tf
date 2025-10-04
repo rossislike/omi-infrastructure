@@ -20,6 +20,11 @@ resource "aws_s3_bucket" "artifacts" {
   force_destroy = true
 }
 
+resource "aws_s3_bucket" "lambda_bucket" {
+  bucket = "${var.project_name}-lambda-${local.suffix}-${var.environment}"
+  tags   = var.tags
+}
+
 resource "aws_s3_bucket_versioning" "artifacts" {
   bucket = aws_s3_bucket.artifacts.id
   versioning_configuration {
