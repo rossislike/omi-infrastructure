@@ -66,7 +66,7 @@ resource "aws_cloudwatch_log_group" "lambda_logs" {
 ####################################################
 data "archive_file" "layer_zip" {
   type        = "zip"
-  source_dir  = "${path.module}/layer/python"
+  source_dir  = "${path.module}/layer"
   output_path = "${path.module}/layer/layer.zip"
 }
 
