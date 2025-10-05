@@ -124,7 +124,7 @@ resource "aws_codebuild_webhook" "webhook" {
 }
 
 resource "aws_cloudwatch_log_group" "codebuild" {
-  name              = "/aws/codebuild/${aws_codebuild_project.github.name}-${var.environment}"
+  name              = "/aws/codebuild/${aws_codebuild_project.github.name}"
   retention_in_days = 14
 
   tags = var.tags
