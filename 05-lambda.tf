@@ -125,10 +125,10 @@ resource "aws_lambda_function" "test_lambda" {
   }
 }
 
-# resource "aws_lambda_permission" "allow_test_lambda" {
-#     statement_id  = "AllowAPIGatewayInvokeGetPhotos"
-#     action        = "lambda:InvokeFunction"
-#     function_name = aws_lambda_function.test_lambda.function_name
-#     principal     = "apigateway.amazonaws.com"
-#     source_arn    = "${aws_apigatewayv2_api.photo_gallery.execution_arn}/*/*"
-# }
+resource "aws_lambda_permission" "allow_test_lambda" {
+    statement_id  = "AllowAPIGatewayInvokeTestLambda"
+    action        = "lambda:InvokeFunction"
+    function_name = aws_lambda_function.test_lambda.function_name
+    principal     = "apigateway.amazonaws.com"
+    source_arn    = "${aws_apigatewayv2_api.api.execution_arn}/*/*"
+}
