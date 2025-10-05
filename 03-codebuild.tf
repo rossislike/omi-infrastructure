@@ -98,6 +98,11 @@ resource "aws_codebuild_project" "github" {
       name  = "CLOUDFRONT_DISTRIBUTION_ID"
       value = aws_cloudfront_distribution.distribution.id
     }
+
+    environment_variable {
+      name  = "VITE_API_URL"
+      value = aws_apigatewayv2_api.api.api_endpoint
+    }
   }
 
   source {
