@@ -41,7 +41,7 @@ resource "aws_apigatewayv2_integration" "test_lambda" {
 resource "aws_apigatewayv2_route" "test_lambda" {
   api_id    = aws_apigatewayv2_api.api.id
   route_key = "GET /test"
-  # target    = "integrations/${aws_apigatewayv2_integration.test_lambda.id}"
+  target    = "integrations/${aws_apigatewayv2_integration.test_lambda.id}"
 
   # authorizer_id = aws_apigatewayv2_authorizer.photo_gallery.id
   # authorization_type = "JWT"
