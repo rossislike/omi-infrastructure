@@ -36,18 +36,18 @@ resource "aws_iam_role_policy" "lambda_policy" {
         ]
 
       },
-      #   {
-      #     Effect = "Allow"
-      #     Action = [
-      #       "dynamodb:GetItem",
-      #       "dynamodb:PutItem",
-      #       "dynamodb:UpdateItem",
-      #       "dynamodb:DeleteItem",
-      #       "dynamodb:Query",
-      #       "dynamodb:Scan"
-      #     ]
-      #     Resource = [aws_dynamodb_table.table.arn]
-      #   }
+        {
+          Effect = "Allow"
+          Action = [
+            "dynamodb:GetItem",
+            "dynamodb:PutItem",
+            "dynamodb:UpdateItem",
+            "dynamodb:DeleteItem",
+            "dynamodb:Query",
+            "dynamodb:Scan"
+          ]
+          Resource = [aws_dynamodb_table.table.arn]
+        }
     ]
   })
 }

@@ -49,3 +49,12 @@ variable "state_bucket" {
 #   sensitive   = true
 # }
 
+variable "site_url" {
+  description = "The URL of the website"
+  type        = map(string)
+  default     = {
+    "dev"     = "https://dev.overcomerministriesinternational.org"
+    "prod"    = "https://overcomerministriesinternational.org"
+  }
+
+}
