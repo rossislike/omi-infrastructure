@@ -44,12 +44,12 @@ variable "state_bucket" {
   default     = "omi-state"
 }
 
-variable "site_url" {
+variable "env_domain" {
   description = "The URL of the website"
   type        = map(string)
   default = {
-    "dev"  = "https://dev.overcomerministriesinternational.org"
-    "prod" = "https://overcomerministriesinternational.org"
+    "dev"  = "dev.overcomerministriesinternational.org"
+    "prod" = "overcomerministriesinternational.org"
   }
 }
 
