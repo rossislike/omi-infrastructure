@@ -20,7 +20,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   }
 
   origin {
-    domain_name = replace(aws_apigatewayv2_api.photo_gallery.api_endpoint, "https://", "")
+    domain_name = replace(aws_apigatewayv2_api.api.api_endpoint, "https://", "")
     origin_id   = "api_gateway"
     custom_origin_config {
       http_port              = 80
