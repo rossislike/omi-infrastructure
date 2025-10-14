@@ -43,18 +43,30 @@ variable "state_bucket" {
   type        = string
   default     = "omi-state"
 }
-# variable "github_token" {
-#   description = "GitHub personal access token"
-#   type        = string
-#   sensitive   = true
-# }
 
 variable "site_url" {
   description = "The URL of the website"
   type        = map(string)
-  default     = {
-    "dev"     = "https://dev.overcomerministriesinternational.org"
-    "prod"    = "https://overcomerministriesinternational.org"
+  default = {
+    "dev"  = "https://dev.overcomerministriesinternational.org"
+    "prod" = "https://overcomerministriesinternational.org"
   }
+}
 
+variable "domain_name" {
+  description = "The domain name of the website"
+  type        = string
+  default     = "overcomerministriesinternational.org"
+}
+
+variable "zone_id" {
+  description = "The hosted zone id"
+  type        = string
+  default     = "Z08834033S2ZP1KBMJYDE"
+}
+
+variable "certificate_arn" {
+  description = "The certificate arn"
+  type        = string
+  default     = "arn:aws:acm:us-east-1:585768164578:certificate/c3f7fa31-b459-4d05-ba5b-c7882509ce31"
 }

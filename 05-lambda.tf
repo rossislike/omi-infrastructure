@@ -36,18 +36,18 @@ resource "aws_iam_role_policy" "lambda_policy" {
         ]
 
       },
-        {
-          Effect = "Allow"
-          Action = [
-            "dynamodb:GetItem",
-            "dynamodb:PutItem",
-            "dynamodb:UpdateItem",
-            "dynamodb:DeleteItem",
-            "dynamodb:Query",
-            "dynamodb:Scan"
-          ]
-          Resource = [aws_dynamodb_table.table.arn]
-        }
+      {
+        Effect = "Allow"
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:Query",
+          "dynamodb:Scan"
+        ]
+        Resource = [aws_dynamodb_table.table.arn]
+      }
     ]
   })
 }
@@ -81,37 +81,37 @@ resource "aws_s3_object" "layer_code" {
 resource "aws_lambda_layer_version" "python_layer" {
   layer_name          = "${var.project_name}-layer-${var.environment}"
   description         = "Python dependencies layer"
-  s3_bucket = aws_s3_bucket.lambda_bucket.id
-  s3_key    = aws_s3_object.layer_code.key
+  s3_bucket           = aws_s3_bucket.lambda_bucket.id
+  s3_key              = aws_s3_object.layer_code.key
   source_code_hash    = data.archive_file.layer_zip.output_base64sha256
   compatible_runtimes = ["python3.13"]
 }
 
 ####################################################
 data "archive_file" "test_lambda_zip" {
-    type = "zip"
-    source_file = "${path.module}/lambdas/test_lambda.py"
-    output_path = "${path.module}/lambdas/test_lambda.zip"
+  type        = "zip"
+  source_file = "${path.module}/lambdas/test_lambda.py"
+  output_path = "${path.module}/lambdas/test_lambda.zip"
 }
 
 resource "aws_s3_object" "test_lambda_code" {
-    bucket = aws_s3_bucket.lambda_bucket.id
-    key = "test_lambda.zip"
-    source = data.archive_file.test_lambda_zip.output_path
-    etag = data.archive_file.test_lambda_zip.output_md5
+  bucket = aws_s3_bucket.lambda_bucket.id
+  key    = "test_lambda.zip"
+  source = data.archive_file.test_lambda_zip.output_path
+  etag   = data.archive_file.test_lambda_zip.output_md5
 }
 
 resource "aws_lambda_function" "test_lambda" {
-  function_name    = "${var.project_name}-test-lambda-${var.environment}"
-  role             = aws_iam_role.lambda_role.arn
-  handler          = "test_lambda.lambda_handler"
-  runtime          = "python3.13"
+  function_name = "${var.project_name}-test-lambda-${var.environment}"
+  role          = aws_iam_role.lambda_role.arn
+  handler       = "test_lambda.lambda_handler"
+  runtime       = "python3.13"
 
-  s3_bucket = aws_s3_bucket.lambda_bucket.id
-  s3_key    = aws_s3_object.test_lambda_code.key
+  s3_bucket        = aws_s3_bucket.lambda_bucket.id
+  s3_key           = aws_s3_object.test_lambda_code.key
   source_code_hash = data.archive_file.test_lambda_zip.output_base64sha256
 
-  layers           = [aws_lambda_layer_version.python_layer.arn]
+  layers = [aws_lambda_layer_version.python_layer.arn]
 
   logging_config {
     log_group  = aws_cloudwatch_log_group.lambda_logs.name
@@ -126,9 +126,9 @@ resource "aws_lambda_function" "test_lambda" {
 }
 
 resource "aws_lambda_permission" "allow_test_lambda" {
-    statement_id  = "AllowAPIGatewayInvokeTestLambda"
-    action        = "lambda:InvokeFunction"
-    function_name = aws_lambda_function.test_lambda.function_name
-    principal     = "apigateway.amazonaws.com"
-    source_arn    = "${aws_apigatewayv2_api.api.execution_arn}/*/*"
+  statement_id  = "AllowAPIGatewayInvokeTestLambda"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.test_lambda.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.api.execution_arn}/*/*"
 }
