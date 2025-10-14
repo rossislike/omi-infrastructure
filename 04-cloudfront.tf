@@ -10,7 +10,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"
-  aliases             = ["${lookup(var.site_url, var.environment)}"]
+  aliases             = ["${lookup(var.env_domain, var.environment)}"]
 
   origin {
     domain_name              = aws_s3_bucket.website.bucket_regional_domain_name
