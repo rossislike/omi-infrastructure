@@ -70,3 +70,9 @@ variable "certificate_arn" {
   type        = string
   default     = "arn:aws:acm:us-east-1:585768164578:certificate/c3f7fa31-b459-4d05-ba5b-c7882509ce31"
 }
+
+variable "cloudfront_domain_name" {
+  description = "CloudFront domain name"
+  type        = string
+  default     = "d3qwqvmb7iljkp.cloudfront.net"
+}
