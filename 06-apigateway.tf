@@ -30,6 +30,13 @@ resource "aws_apigatewayv2_stage" "stage" {
   auto_deploy = true
 }
 
+resource "aws_apigatewayv2_stage" "env_stage" {
+  count       = var.environment == "prod" ? 0 : 1
+  api_id      = aws_apigatewayv2_api.api.id
+  name        = var.environment
+  auto_deploy = true
+}
+
 ####################################################
 resource "aws_apigatewayv2_integration" "test_lambda" {
   api_id             = aws_apigatewayv2_api.api.id
