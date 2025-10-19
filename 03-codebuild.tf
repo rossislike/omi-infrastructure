@@ -101,7 +101,7 @@ resource "aws_codebuild_project" "github" {
 
     environment_variable {
       name  = "VITE_API_URL"
-      value = aws_apigatewayv2_api.api.api_endpoint
+      value = "${aws_apigatewayv2_api.api.api_endpoint}${var.environment == "prod" ? "" : "/${var.environment}"}"
     }
   }
 

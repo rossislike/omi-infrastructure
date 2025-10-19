@@ -100,7 +100,7 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
 
 resource "aws_route53_record" "record" {
   zone_id = var.zone_id
-  name    = var.domain_name
+  name    = lookup(var.env_domain, var.environment)
 
   type = "A"
   alias {
