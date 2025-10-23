@@ -43,12 +43,7 @@ resource "aws_iam_role_policy" "codebuild" {
           "s3:*"
         ]
         Resource = [
-          "arn:aws:s3:::${aws_s3_bucket.website.bucket}",
-          "arn:aws:s3:::${aws_s3_bucket.website.bucket}/*",
-          "arn:aws:s3:::${aws_s3_bucket.artifacts.bucket}",
-          "arn:aws:s3:::${aws_s3_bucket.artifacts.bucket}/*",
-          "arn:aws:s3:::${var.state_bucket}",
-          "arn:aws:s3:::${var.state_bucket}/*",
+          "arn:aws:s3:::${var.project_name}*",
         ]
       },
       {
