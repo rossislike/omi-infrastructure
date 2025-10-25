@@ -28,6 +28,16 @@ resource "aws_s3_bucket" "lambda_bucket" {
 resource "aws_s3_bucket" "photos_bucket" {
   bucket = "${var.project_name}-photos-${local.suffix}-${var.environment}"
   tags   = var.tags
+  
+}
+
+resource "aws_s3_bucket_public_access_block" "photos" {
+  bucket = aws_s3_bucket.photos_bucket.id
+  
+  block_public_acls       = false
+  block_public_policy     = false 
+  ignore_public_acls      = false
+  restrict_public_buckets = false
 }
 
 resource "aws_s3_bucket_policy" "photos_bucket_policy" {
