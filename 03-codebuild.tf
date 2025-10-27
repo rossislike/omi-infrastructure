@@ -40,17 +40,10 @@ resource "aws_iam_role_policy" "codebuild" {
       {
         Effect = "Allow"
         Action = [
-          "s3:GetObject",
-          "s3:GetObjectVersion",
-          "s3:PutObject",
-          "s3:DeleteObject",
-          "s3:ListBucket"
+          "s3:*"
         ]
         Resource = [
-          # "arn:aws:s3:::${aws_s3_bucket.website.bucket}",
-          # "arn:aws:s3:::${aws_s3_bucket.website.bucket}/*",
-          "arn:aws:s3:::${aws_s3_bucket.artifacts.bucket}",
-          "arn:aws:s3:::${aws_s3_bucket.artifacts.bucket}/*"
+          "arn:aws:s3:::${var.project_name}*",
         ]
       },
       {
@@ -81,15 +74,30 @@ resource "aws_codebuild_project" "github" {
   service_role = aws_iam_role.codebuild.arn
 
   artifacts {
-    type = "S3"
-    location = aws_s3_bucket.artifacts.bucket
+    type = "NO_ARTIFACTS"
   }
+
 
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
     image                       = "aws/codebuild/amazonlinux2-x86_64-standard:5.0"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
+
+    environment_variable {
+      name  = "S3_BUCKET"
+      value = aws_s3_bucket.website.bucket
+    }
+
+    environment_variable {
+      name  = "CLOUDFRONT_DISTRIBUTION_ID"
+      value = aws_cloudfront_distribution.distribution.id
+    }
+
+    environment_variable {
+      name  = "VITE_API_URL"
+      value = "${aws_apigatewayv2_api.api.api_endpoint}${var.environment == "prod" ? "" : "/${var.environment}"}"
+    }
   }
 
   source {
@@ -113,11 +121,4 @@ resource "aws_codebuild_webhook" "webhook" {
       pattern = "PULL_REQUEST_MERGED"
     }
   }
-}
-
-resource "aws_cloudwatch_log_group" "codebuild" {
-  name              = "/aws/codebuild/${aws_codebuild_project.github.name}-${var.environment}"
-  retention_in_days = 14
-
-  tags = var.tags
 }

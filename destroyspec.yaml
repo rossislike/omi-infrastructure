@@ -11,6 +11,12 @@ phases:
     commands:
       # Use an environment variable for the backend S3 bucket name
       - terraform init -backend-config="bucket=$TF_STATE_BUCKET"
+      - '[[ -n "${WEBSITE_BUCKET}" ]] && echo "Emptying $WEBSITE_BUCKET"'
+      - '[[ -n "${WEBSITE_BUCKET}" ]] && aws s3 rm s3://$WEBSITE_BUCKET --recursive'
+      - '[[ -n "${ARTIFACTS_BUCKET}" ]] && echo "Emptying $ARTIFACTS_BUCKET"'
+      - '[[ -n "${ARTIFACTS_BUCKET}" ]] && aws s3 rm s3://$ARTIFACTS_BUCKET --recursive'
+      - '[[ -n "${LAMBDA_BUCKET}" ]] && echo "Emptying $LAMBDA_BUCKET"'
+      - '[[ -n "${LAMBDA_BUCKET}" ]] && aws s3 rm s3://$LAMBDA_BUCKET --recursive'
   build:
     commands:
       # Run the destroy command
