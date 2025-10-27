@@ -3,7 +3,7 @@ variable "tags" {
   type        = map(string)
   default = {
     Project     = "omi-frontend"
-    Environment = "dev"
+    Environment = "prod"
     ManagedBy   = "terraform"
   }
 }
@@ -17,7 +17,7 @@ variable "project_name" {
 variable "environment" {
   description = "Environment (dev, staging, prod)"
   type        = string
-  default     = "dev"
+  default     = "prod"
 }
 
 variable "github_owner" {
@@ -35,7 +35,7 @@ variable "github_repo" {
 variable "github_branch" {
   description = "GitHub branch to track"
   type        = string
-  default     = "dev"
+  default     = "prod"
 }
 
 variable "state_bucket" {

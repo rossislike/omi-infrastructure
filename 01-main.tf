@@ -9,7 +9,7 @@ terraform {
 
   backend "s3" {
     bucket  = "omi-state"
-    key     = "omi-infrastructure/dev/terraform.tfstate"
+    key     = "omi-infrastructure/prod/terraform.tfstate"
     region  = "us-east-1"
     encrypt = true
   }
