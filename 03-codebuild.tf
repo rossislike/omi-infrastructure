@@ -98,6 +98,23 @@ resource "aws_codebuild_project" "github" {
       name  = "VITE_API_URL"
       value = "${aws_apigatewayv2_api.api.api_endpoint}${var.environment == "prod" ? "" : "/${var.environment}"}"
     }
+
+    environment_variable {
+      name  = "WEBSITE_BUCKET"
+      value = aws_s3_bucket.website.bucket
+    }
+    environment_variable {
+      name  = "ARTIFACTS_BUCKET"
+      value = aws_s3_bucket.artifacts.bucket
+    }
+    environment_variable {
+      name  = "LAMBDA_BUCKET"
+      value = aws_s3_bucket.lambda_bucket.bucket
+    }
+    environment_variable {
+      name  = "PHOTOS_BUCKET"
+      value = aws_s3_bucket.photos_bucket.bucket
+    }
   }
 
   source {

@@ -17,6 +17,8 @@ phases:
       - '[[ -n "${ARTIFACTS_BUCKET}" ]] && aws s3 rm s3://$ARTIFACTS_BUCKET --recursive'
       - '[[ -n "${LAMBDA_BUCKET}" ]] && echo "Emptying $LAMBDA_BUCKET"'
       - '[[ -n "${LAMBDA_BUCKET}" ]] && aws s3 rm s3://$LAMBDA_BUCKET --recursive'
+      - '[[ -n "${PHOTOS_BUCKET}" ]] && echo "Emptying $PHOTOS_BUCKET"'
+      - '[[ -n "${PHOTOS_BUCKET}" ]] && aws s3 rm s3://$PHOTOS_BUCKET --recursive'
   build:
     commands:
       # Run the destroy command
