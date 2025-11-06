@@ -9,7 +9,7 @@ locals {
 }
 
 resource "aws_s3_bucket" "website" {
-  bucket = "${var.project_name}-website-${local.suffix}-${var.environment}"
+  bucket = "${var.project_name}-website-${var.environment}"
   tags   = var.tags
 }
 
@@ -21,12 +21,12 @@ resource "aws_s3_bucket" "artifacts" {
 }
 
 resource "aws_s3_bucket" "lambda_bucket" {
-  bucket = "${var.project_name}-lambda-${local.suffix}-${var.environment}"
+  bucket = "${var.project_name}-lambda-${var.environment}"
   tags   = var.tags
 }
 
 resource "aws_s3_bucket" "photos_bucket" {
-  bucket = "${var.project_name}-photos-${local.suffix}-${var.environment}"
+  bucket = "${var.project_name}-photos-${var.environment}"
   tags   = var.tags
   
 }
