@@ -11,12 +11,38 @@ phases:
     commands:
       # Use an environment variable for the backend S3 bucket name
       - terraform init -backend-config="bucket=$TF_STATE_BUCKET"
-      - '[[ -n "${WEBSITE_BUCKET}" ]] && echo "Emptying $WEBSITE_BUCKET"'
-      - '[[ -n "${WEBSITE_BUCKET}" ]] && aws s3 rm s3://$WEBSITE_BUCKET --recursive'
-      - '[[ -n "${ARTIFACTS_BUCKET}" ]] && echo "Emptying $ARTIFACTS_BUCKET"'
-      - '[[ -n "${ARTIFACTS_BUCKET}" ]] && aws s3 rm s3://$ARTIFACTS_BUCKET --recursive'
-      - '[[ -n "${LAMBDA_BUCKET}" ]] && echo "Emptying $LAMBDA_BUCKET"'
-      - '[[ -n "${LAMBDA_BUCKET}" ]] && aws s3 rm s3://$LAMBDA_BUCKET --recursive'
+      - |
+        # Only empty WEBSITE_BUCKET if it's set and the bucket exists
+        if [[ -n "${WEBSITE_BUCKET}" ]] && aws s3api head-bucket --bucket "$WEBSITE_BUCKET" >/dev/null 2>&1; then
+          echo "Emptying $WEBSITE_BUCKET"
+          aws s3 rm s3://"$WEBSITE_BUCKET" --recursive
+        else
+          echo "Skipping WEBSITE_BUCKET (not set or does not exist): ${WEBSITE_BUCKET:-<unset>}"
+        fi
+      - |
+        # Only empty ARTIFACTS_BUCKET if it's set and the bucket exists
+        if [[ -n "${ARTIFACTS_BUCKET}" ]] && aws s3api head-bucket --bucket "$ARTIFACTS_BUCKET" >/dev/null 2>&1; then
+          echo "Emptying $ARTIFACTS_BUCKET"
+          aws s3 rm s3://"$ARTIFACTS_BUCKET" --recursive
+        else
+          echo "Skipping ARTIFACTS_BUCKET (not set or does not exist): ${ARTIFACTS_BUCKET:-<unset>}"
+        fi
+      - |
+        # Only empty LAMBDA_BUCKET if it's set and the bucket exists
+        if [[ -n "${LAMBDA_BUCKET}" ]] && aws s3api head-bucket --bucket "$LAMBDA_BUCKET" >/dev/null 2>&1; then
+          echo "Emptying $LAMBDA_BUCKET"
+          aws s3 rm s3://"$LAMBDA_BUCKET" --recursive
+        else
+          echo "Skipping LAMBDA_BUCKET (not set or does not exist): ${LAMBDA_BUCKET:-<unset>}"
+        fi
+      - |
+        # Only empty PHOTOS_BUCKET if it's set and the bucket exists
+        if [[ -n "${PHOTOS_BUCKET}" ]] && aws s3api head-bucket --bucket "$PHOTOS_BUCKET" >/dev/null 2>&1; then
+          echo "Emptying $PHOTOS_BUCKET"
+          aws s3 rm s3://"$PHOTOS_BUCKET" --recursive
+        else
+          echo "Skipping PHOTOS_BUCKET (not set or does not exist): ${PHOTOS_BUCKET:-<unset>}"
+        fi
   build:
     commands:
       # Run the destroy command
