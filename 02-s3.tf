@@ -13,6 +13,18 @@ resource "aws_s3_bucket" "website" {
   tags   = var.tags
 }
 
+resource "aws_s3_bucket_cors_configuration" "website" { 
+  bucket = aws_s3_bucket.website.id
+
+  cors_rule { 
+    allowed_methods = ["GET"]
+    allowed_origins = [
+      "http://localhost:5173",
+      "https://${var.cloudfront_domain_name}",
+      "https://${lookup(var.env_domain, var.environment)}"
+    ]
+  }
+}
 
 resource "aws_s3_bucket" "artifacts" {
   bucket        = "${var.project_name}-artifacts-${var.environment}"
