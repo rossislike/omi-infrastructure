@@ -74,5 +74,5 @@ variable "certificate_arn" {
 variable "cloudfront_domain_name" {
   description = "CloudFront domain name"
   type        = string
-  default     = "d39zmw8kevzfqv.cloudfront.net"
+  default     = "d1nbkiyoyvj3fx.cloudfront.net"
 }
