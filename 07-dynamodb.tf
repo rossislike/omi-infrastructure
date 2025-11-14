@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "table" {
-  name         = "omi"
+  name         = "omi-${var.environment}"
   billing_mode = "PAY_PER_REQUEST"
   attribute {
     name = "PK"
@@ -32,7 +32,7 @@ resource "aws_dynamodb_table" "table" {
   range_key = "SK"
 
   tags = {
-    Name        = "hec"
-    Environment = "dev"
+    Name        = "omi"
+    Environment = "${var.environment}"
   }
 }
