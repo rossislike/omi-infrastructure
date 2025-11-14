@@ -129,13 +129,13 @@ resource "aws_codebuild_project" "github" {
   source_version = var.environment
 }
 
-resource "aws_codebuild_webhook" "webhook" {
-  project_name = aws_codebuild_project.github.name
-  build_type   = "BUILD"
-  filter_group {
-    filter {
-      type    = "EVENT"
-      pattern = "PULL_REQUEST_MERGED"
-    }
-  }
-}
+# resource "aws_codebuild_webhook" "webhook" {
+#   project_name = aws_codebuild_project.github.name
+#   build_type   = "BUILD"
+#   filter_group {
+#     filter {
+#       type    = "EVENT"
+#       pattern = "PULL_REQUEST_MERGED"
+#     }
+#   }
+# }
