@@ -62,11 +62,11 @@ variable "domain_name" {
 variable "zone_id" {
   description = "The hosted zone id"
   type        = string
-  default     = "Z08834033S2ZP1KBMJYDE"
+  default     = "Z0161996372RJXWZ3X9DQ"
 }
 
 variable "certificate_arn" {
   description = "The certificate arn"
   type        = string
-  default     = "arn:aws:acm:us-east-1:585768164578:certificate/c3f7fa31-b459-4d05-ba5b-c7882509ce31"
+  default     = "arn:aws:acm:us-east-1:585768164578:certificate/585e7b0c-93e1-4595-b387-f8f3c5ef5022"
 }
