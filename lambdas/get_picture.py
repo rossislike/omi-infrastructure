@@ -3,7 +3,7 @@ import os
 
 bucket_name = os.environ['BUCKET_NAME']
 
-def lambda_handler(event):
+def lambda_handler(event, context):
     key = event['pathParameters']['id']
 
     s3 = boto3.client('s3')
@@ -12,7 +12,7 @@ def lambda_handler(event):
         'get_object', 
         Params={
             'Bucket':bucket_name,
-            'Key':key
+            'Key': f'photos/{key}'
         },
         ExpiresIn=3600
     )
