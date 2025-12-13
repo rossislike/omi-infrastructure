@@ -48,31 +48,25 @@ variable "env_domain" {
   description = "The URL of the website"
   type        = map(string)
   default = {
-    "dev"  = "dev.overcomerministriesinternational.org"
-    "prod" = "overcomerministriesinternational.org"
+    "dev"  = "dev.overcomerministriesinternationalcenter.org"
+    "prod" = "overcomerministriesinternationalcenter.org"
   }
 }
 
 variable "domain_name" {
   description = "The domain name of the website"
   type        = string
-  default     = "overcomerministriesinternational.org"
+  default     = "overcomerministriesinternationalcenter.org"
 }
 
 variable "zone_id" {
   description = "The hosted zone id"
   type        = string
-  default     = "Z08834033S2ZP1KBMJYDE"
+  default     = "Z0161996372RJXWZ3X9DQ"
 }
 
 variable "certificate_arn" {
   description = "The certificate arn"
   type        = string
-  default     = "arn:aws:acm:us-east-1:585768164578:certificate/c3f7fa31-b459-4d05-ba5b-c7882509ce31"
-}
-
-variable "cloudfront_domain_name" {
-  description = "CloudFront domain name"
-  type        = string
-  default     = "d1nbkiyoyvj3fx.cloudfront.net"
+  default     = "arn:aws:acm:us-east-1:585768164578:certificate/585e7b0c-93e1-4595-b387-f8f3c5ef5022"
 }
