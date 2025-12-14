@@ -63,7 +63,7 @@ resource "aws_apigatewayv2_integration" "get_picture" {
 
 resource "aws_apigatewayv2_route" "get_picture" {
   api_id    = aws_apigatewayv2_api.api.id
-  route_key = "GET /pictures"
+  route_key = "GET /pictures/{id}"
   target    = "integrations/${aws_apigatewayv2_integration.get_picture.id}"
 
   # authorizer_id = aws_apigatewayv2_authorizer.photo_gallery.id
