@@ -111,10 +111,6 @@ resource "aws_codebuild_project" "github" {
       name  = "LAMBDA_BUCKET"
       value = aws_s3_bucket.lambda_bucket.bucket
     }
-    environment_variable {
-      name  = "PHOTOS_BUCKET"
-      value = aws_s3_bucket.photos_bucket.bucket
-    }
   }
 
   source {
