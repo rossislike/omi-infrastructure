@@ -54,21 +54,21 @@ resource "aws_apigatewayv2_route" "test_lambda" {
 }
 
 ####################################################
-# resource "aws_apigatewayv2_integration" "get_photo" {
-#   api_id                 = aws_apigatewayv2_api.api.id
-#   integration_uri        = aws_lambda_function.get_photo.arn
-#   integration_type       = "AWS_PROXY"
-#   integration_method     = "POST"
-# }
+resource "aws_apigatewayv2_integration" "get_picture" {
+  api_id                 = aws_apigatewayv2_api.api.id
+  integration_uri        = aws_lambda_function.get_picture.arn
+  integration_type       = "AWS_PROXY"
+  integration_method     = "POST"
+}
 
-# resource "aws_apigatewayv2_route" "get_photo" {
-#   api_id    = aws_apigatewayv2_api.api.id
-#   route_key = "GET /photo"
-#   target    = "integrations/${aws_apigatewayv2_integration.get_photo.id}"
+resource "aws_apigatewayv2_route" "get_picture" {
+  api_id    = aws_apigatewayv2_api.api.id
+  route_key = "GET /pictures/{id}"
+  target    = "integrations/${aws_apigatewayv2_integration.get_picture.id}"
 
-#   authorizer_id = aws_apigatewayv2_authorizer.photo_gallery.id
-#   authorization_type = "JWT"
-# }
+  # authorizer_id = aws_apigatewayv2_authorizer.photo_gallery.id
+  # authorization_type = "JWT"
+}
 
 ####################################################
 # resource "aws_apigatewayv2_integration" "post_photo" {
