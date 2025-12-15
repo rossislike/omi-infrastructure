@@ -35,14 +35,6 @@ phases:
         else
           echo "Skipping LAMBDA_BUCKET (not set or does not exist): ${LAMBDA_BUCKET:-<unset>}"
         fi
-      - |
-        # Only empty PHOTOS_BUCKET if it's set and the bucket exists
-        if [[ -n "${PHOTOS_BUCKET}" ]] && aws s3api head-bucket --bucket "$PHOTOS_BUCKET" >/dev/null 2>&1; then
-          echo "Emptying $PHOTOS_BUCKET"
-          aws s3 rm s3://"$PHOTOS_BUCKET" --recursive
-        else
-          echo "Skipping PHOTOS_BUCKET (not set or does not exist): ${PHOTOS_BUCKET:-<unset>}"
-        fi
   build:
     commands:
       # Run the destroy command
