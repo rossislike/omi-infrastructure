@@ -217,7 +217,7 @@ resource "aws_lambda_function" "get_events" {
   }
 }
 
-resource "aws_lambda_permission" "allow_get_photo" {
+resource "aws_lambda_permission" "allow_get_events" {
     statement_id  = "AllowAPIGatewayInvokeGetPhoto"
     action        = "lambda:InvokeFunction"
     function_name = aws_lambda_function.get_events.function_name
