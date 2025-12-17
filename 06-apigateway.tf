@@ -71,6 +71,23 @@ resource "aws_apigatewayv2_route" "get_picture" {
 }
 
 ####################################################
+resource "aws_apigatewayv2_integration" "get_events" {
+  api_id                 = aws_apigatewayv2_api.api.id
+  integration_uri        = aws_lambda_function.get_events.arn
+  integration_type       = "AWS_PROXY"
+  integration_method     = "POST"
+}
+
+resource "aws_apigatewayv2_route" "get_events" {
+  api_id    = aws_apigatewayv2_api.api.id
+  route_key = "GET /events"
+  target    = "integrations/${aws_apigatewayv2_integration.get_events.id}"
+
+  # authorizer_id = aws_apigatewayv2_authorizer.photo_gallery.id
+  # authorization_type = "JWT"
+}
+
+####################################################
 # resource "aws_apigatewayv2_integration" "post_photo" {
 #   api_id                 = aws_apigatewayv2_api.api.id
 #   integration_uri        = aws_lambda_function.post_photo.arn

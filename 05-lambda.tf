@@ -178,3 +178,49 @@ resource "aws_lambda_permission" "allow_get_photo" {
     principal     = "apigateway.amazonaws.com"
     source_arn    = "${aws_apigatewayv2_api.api.execution_arn}/*/*"
 }
+
+####################################################
+data "archive_file" "get_events_zip" {
+  type        = "zip"
+  source_file = "${path.module}/lambdas/get_events.py"
+  output_path = "${path.module}/lambdas/get_events.zip"
+}
+
+resource "aws_s3_object" "get_events_code" {
+  bucket = aws_s3_bucket.lambda_bucket.id
+  key    = "get_events.zip"
+  source = data.archive_file.get_events_zip.output_path
+  etag   = data.archive_file.get_events_zip.output_md5
+}
+
+resource "aws_lambda_function" "get_events" {
+  function_name = "${var.project_name}-get-events-${var.environment}"
+  role          = aws_iam_role.lambda_role.arn
+  handler       = "get_events.lambda_handler"
+  runtime       = "python3.13"
+
+  s3_bucket        = aws_s3_bucket.lambda_bucket.id
+  s3_key           = aws_s3_object.get_events_code.key
+  source_code_hash = data.archive_file.get_events_zip.output_base64sha256
+
+  # layers = [aws_lambda_layer_version.python_layer.arn]
+
+  logging_config {
+    log_group  = aws_cloudwatch_log_group.lambda_logs.name
+    log_format = "Text"
+  }
+  environment {
+    variables = {
+      TABLE_NAME = aws_dynamodb_table.table.name
+      #   PHOTOS_TABLE_NAME = aws_dynamodb_table.photogallery.name
+    }
+  }
+}
+
+resource "aws_lambda_permission" "allow_get_photo" {
+    statement_id  = "AllowAPIGatewayInvokeGetPhoto"
+    action        = "lambda:InvokeFunction"
+    function_name = aws_lambda_function.get_events.function_name
+    principal     = "apigateway.amazonaws.com"
+    source_arn    = "${aws_apigatewayv2_api.api.execution_arn}/*/*"
+}
